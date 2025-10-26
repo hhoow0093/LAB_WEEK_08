@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 //which observes any data changes and immediately update the app UI
 //Here we're observing the returned LiveData and getting the
 //state result of the worker (Can be SUCCEEDED, FAILED, or CANCELLED)
-//isFinished is used to check if the state is either SUCCEEDED or FAILED
+//isFinished is used to check if the state is either SUCCEEDED or FAILE
         workManager.getWorkInfoByIdLiveData(firstRequest.id)
             .observe(this) { info ->
                 info?.let {
