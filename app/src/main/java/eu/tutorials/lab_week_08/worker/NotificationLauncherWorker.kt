@@ -21,12 +21,12 @@ class NotificationLauncherWorker(
 
         val latch = CountDownLatch(1)
 
-        // Add completion callback
+
         NotificationService.setCompletionCallback(id) {
             latch.countDown()
         }
 
-        // Start the service
+
         val serviceIntent = Intent(
             applicationContext,
             NotificationService::class.java
@@ -35,10 +35,10 @@ class NotificationLauncherWorker(
         }
         ContextCompat.startForegroundService(applicationContext, serviceIntent)
 
-        // Wait for completion (with timeout)
+
         val completed = latch.await(30, TimeUnit.SECONDS)
 
-        // Clear callback
+
         NotificationService.clearCompletionCallback(id)
 
         return if (completed) {

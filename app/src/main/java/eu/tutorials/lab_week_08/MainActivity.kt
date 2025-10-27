@@ -27,42 +27,42 @@ class MainActivity : AppCompatActivity() {
         val Id = "001"
         val Id2 = "002"
 
-        // Worker 1
+
         val firstRequest = OneTimeWorkRequest
             .Builder(FirstWorker::class.java)
             .setConstraints(networkConstraints)
             .setInputData(getIdInputData(FirstWorker.INPUT_DATA_ID, Id))
             .build()
 
-        // Worker 2
+
         val secondRequest = OneTimeWorkRequest
             .Builder(SecondWorker::class.java)
             .setConstraints(networkConstraints)
             .setInputData(getIdInputData(SecondWorker.INPUT_DATA_ID, Id))
             .build()
 
-        // Notification Service Worker (blocks until NotificationService completes)
+
         val notificationWorkerRequest = OneTimeWorkRequest
             .Builder(NotificationLauncherWorker::class.java)
             .setConstraints(networkConstraints)
             .setInputData(getIdInputData(NotificationLauncherWorker.INPUT_DATA_ID, Id))
             .build()
 
-        // Worker 3
+
         val thirdRequest = OneTimeWorkRequest
             .Builder(ThirdWorker::class.java)
             .setConstraints(networkConstraints)
             .setInputData(getIdInputData(ThirdWorker.INPUT_DATA_ID, Id2))
             .build()
 
-        // Notification Service 2 Worker (blocks until NotificationService2 completes)
+
         val notificationWorker2Request = OneTimeWorkRequest
-            .Builder(NotificationLauncherWorker::class.java) // Create similar worker for Service2
+            .Builder(NotificationLauncherWorker::class.java)
             .setConstraints(networkConstraints)
             .setInputData(getIdInputData(NotificationLauncherWorker.INPUT_DATA_ID, Id2))
             .build()
 
-        // Chain: Worker1 → Worker2 → NotificationService → Worker3 → NotificationService2
+        //  Worker1 → Worker2 → NotificationService → Worker3 → NotificationService2
         workManager
             .beginWith(firstRequest)
             .then(secondRequest)
