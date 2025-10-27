@@ -9,14 +9,14 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
-class NotificationService : Service() {
+class SecondNotificationService : Service() {
     private lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var serviceHandler: Handler
     override fun onBind(intent: Intent): IBinder? = null
     override fun onCreate() {
         super.onCreate()
         notificationBuilder = startForegroundService()
-        val handlerThread = HandlerThread("SecondThread")
+        val handlerThread = HandlerThread("ThirdThread")
             .apply { start() }
         serviceHandler = Handler(handlerThread.looper)
     }
@@ -41,8 +41,8 @@ class NotificationService : Service() {
     }
     private fun createNotificationChannel(): String =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = "001"
-            val channelName = "001 Channel"
+            val channelId = "002"
+            val channelName = "002 Channel"
             val channelPriority = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(
                 channelId,
@@ -59,9 +59,9 @@ class NotificationService : Service() {
     private fun getNotificationBuilder(pendingIntent: PendingIntent, channelId:
     String) =
         NotificationCompat.Builder(this, channelId)
-            .setContentTitle("worker process is done").setContentText("Check it out!")
+            .setContentTitle("Third worker process is done").setContentText("Check it out!")
             .setSmallIcon(R.drawable.ic_launcher_foreground).setContentIntent(pendingIntent)
-            .setTicker("worker process is done, check it out!").setOngoing(true)
+            .setTicker("Third worker process is done, check it out!").setOngoing(true)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int{
         val returnValue = super.onStartCommand(intent,
@@ -99,12 +99,11 @@ class NotificationService : Service() {
     }
 
     companion object {
-        const val NOTIFICATION_ID = 0xCA7
+        const val NOTIFICATION_ID = 0xCA6
         const val EXTRA_ID = "Id"
         private val mutableID = MutableLiveData<String>()
         val trackingCompletion: LiveData<String> = mutableID
 
-        // Callback mechanism for Workers
         private val completionCallbacks = mutableMapOf<String, () -> Unit>()
 
         fun setCompletionCallback(id: String, callback: () -> Unit) {
